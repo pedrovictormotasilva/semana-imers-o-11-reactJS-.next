@@ -1,0 +1,37 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  color: #fff
+}
+
+body{
+  background-color: #0c0f16
+}
+
+.max-width {
+  max-width: 1300px;
+  padding: 0 10px;
+  margin: auto;
+}
+
+.navbar {
+  position: fixed;
+  width: 100%;
+  z-index: 999;
+  padding: 20px 0;
+  background-color: #121721
+  border-bottom: solid #1b202a 2px;
+}
+
+.navbar .max-width {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar .logo{
+  
+}
+

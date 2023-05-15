@@ -1,6 +1,57 @@
 import Head from 'next/head'
 import Script from 'next/script'
-export default function Page() {
+import React from 'react'
+
+export default function Page({ data }) {
+  const [orcamento, setOrcamento] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    content: '',
+  })
+
+  const [response, setResponse] = useState({
+    formSave: '',
+    type: '',
+    mensagem: '',
+  })
+
+  const onChangeInput = (e) => setOrcamento({ ...orcamento, [e.target.name]: e.target.value })
+
+  const sendOrcamento = async (e) => {
+    e.preventDefault()
+
+    setResponse({ formSave: true })
+    try {
+      const res = await fetch('http://localhost:3000/cadastrar-orcamento', {
+        method: 'POST',
+        body: JSON.stringify(orcamento),
+        headers: { 'Content-Type': 'application/json' },
+      })
+
+      const responseEnv = await res.json()
+
+      if (responseEnv.erro) {
+        setReponse({
+          formSave: false,
+          type: 'error',
+          mensagem: responseEnv.mensagem,
+        })
+      } else {
+        setReponse({
+          formSave: false,
+          type: 'success',
+          mensagem: responseEnv.mensagem,
+        })
+      }
+    } catch (err) {
+      setReponse({
+        formSave: false,
+        type: 'error',
+        mensagem: 'Erro: Orçamento não enviado com sucesso!',
+      })
+    }
+  }
   return (
     <div>
       <Head>
@@ -38,42 +89,54 @@ export default function Page() {
         </div>
       </nav>
 
-      <section className="top" id="top">
+      <section className=" img-top top" id="top">
+        <style>
+          {`.img-top {
+            background: url(` +
+            data.url +
+            data.datahome.image_top +
+            `);
+            background-repeat: no-repeat;
+            background-position: center;
+          }`}
+        </style>
         <div className="max-width">
           <div className="top-content">
-            <div className="text-1">Construa seu futuro</div>
-            <div className="text-2">com a melhor escola do estado!</div>
-            <div className="text-3">Venha ser Adolfo Ferreira</div>
-            <a href="#">Entrar em Contato</a>
+            <div className="text-1">{data.datahome.title_top_one}</div>
+            <div className="text-2">{data.datahome.title_top_one}</div>
+            <div className="text-3">{data.datahome.title_top_one}</div>
+            <a href="#">{data.datahome.btn_title_top}</a>
           </div>
         </div>
       </section>
 
       <section className="services" id="services">
         <div className="max-width">
-          <h2 className="title">Cursos</h2>
+          <h2 className="title">{data.datahome.ser_title}</h2>
           <div className="serv-content">
             <div className="card">
               <div className="box">
-                <i className="fa-sharp fa-solid fa-user-nurse"></i>
-                <div className="text">Enfermagem</div>
-                <p>Aenean consectetur feugiat eros at aliquet. Integer ac nisi dui. Nam maximus nunc non aliquet aliquet.</p>
-              </div>
-            </div>
-            <div className="card">
-              <div className="box">
-                <i className="fas fa-code"></i>
-                <i className="fa-solid fa-computer"></i>
-                <div className="text">DS & Infor</div>
-                <p>Aenean consectetur feugiat eros at aliquet. Integer ac nisi dui. Nam maximus nunc non aliquet aliquet.</p>
+                <i className={data.datahome.ser_icon_one}></i>
+                <div className="text">{data.datahome.ser_title_one}</div>
+                <p>{data.datahome.ser_desc_one}</p>
               </div>
             </div>
 
             <div className="card">
               <div className="box">
-                <i className="fa-solid fa-money-bill-1-wave"></i>
-                <div className="text">Administração</div>
-                <p>Aenean consectetur feugiat eros at aliquet. Integer ac nisi dui. Nam maximus nunc non aliquet aliquet.</p>
+                <i className={data.datahome.ser_icon_two}></i>
+                <div className="text">{data.datahome.ser_title_two}</div>
+                <p>{data.datahome.ser_desc_two}</p>
+              </div>
+            </div>
+
+            <div className="card">
+              <div className="card">
+                <div className="box">
+                  <i className={data.datahome.ser_icon_three}></i>
+                  <div className="text">{data.datahome.ser_title_three}</div>
+                  <p>{data.datahome.ser_desc_three}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -82,58 +145,68 @@ export default function Page() {
 
       <section className="contact" id="contact">
         <div className="max-width">
-          <h2 className="title">Contato</h2>
+          <h2 className="title">{data.datahome.cont_title}</h2>
           <div className="contact-content">
             <div className="column left">
-              <p>Aliquam facilisis vitae ante eu consequat. Nullam a mi vel metus tristique commodo id quis diam.</p>
+              <p>{data.datahome.cont_desc}</p>
               <div className="icons">
                 <div className="row">
-                  <i className="fas fa-user"></i>
+                  <i className={data.datahome.cont_icon_emp}></i>
                   <div className="info">
-                    <div className="head">Empresa</div>
-                    <div className="sub-title">Adolfo Ferreira de Sousa</div>
+                    <div className="head">{data.datahome.cont_title_emp}</div>
+                    <div className="sub-title">{data.datahome.cont_name_emp}</div>
                   </div>
                 </div>
 
                 <div className="row">
-                  <i className="fas fa-map-marker-alt"></i>
+                  <i className={data.datahome.cont_icon_end}></i>
                   <div className="info">
-                    <div className="head">Endereço</div>
-                    <div className="sub-title">Avenida Abolição</div>
+                    <div className="head">{data.datahome.cont_title_end}</div>
+                    <div className="sub-title">{data.datahome.cont_name_end}</div>
                   </div>
                 </div>
 
                 <div className="row">
-                  <i className="fas fa-envelope"></i>
+                  <i className={data.datahome.cont_icon_email}></i>
                   <div className="info">
-                    <div className="head">E-mail</div>
-                    <div className="sub-title">adolfoafsescola@gmail.com.br</div>
+                    <div className="head">{data.datahome.cont_title_email}</div>
+                    <div className="sub-title">{data.datahome.cont_name_email}</div>
                   </div>
                 </div>
               </div>
             </div>
             <div className="column right">
-              <div className="text">Mensagem de Contato</div>
-              <form>
+              <div className="text">{data.datahome.cont_title_form}</div>
+
+              {response.type === 'error' ? <p className="alert-danger"> response.mensagem</p> : ''}
+              {response.type === 'success' ? <p className="alert-success "> response.mensagem</p> : ''}
+
+              <form onSubmit={sendOrcamento}>
                 <div className="fields">
                   <div className="field name">
-                    <input type="text" placeholder="Digite o nome" required />
+                    <input type="text" name="name" placeholder="Digite o nome" onChange={onChangeInput} required />
                   </div>
                   <div className="field email">
-                    <input type="email" placeholder="Digite o e-mail" required />
+                    <input type="email" name="email" placeholder="Digite o e-mail" onChange={onChangeInput} required />
                   </div>
                 </div>
 
                 <div className="field">
-                  <input type="text" placeholder="Digite o assunto" required />
+                  <input type="text" name="subject" placeholder="Digite o assunto" onChange={onChangeInput} required />
                 </div>
 
                 <div className="field textarea">
-                  <textarea cols="30" rows="10" placeholder="Digite o conteúdo" required></textarea>
+                  <textarea name="content" cols="30" rows="10" placeholder="Digite o conteúdo" onChange={onChangeInput} required></textarea>
                 </div>
 
                 <div className="button-area">
-                  <button type="submit">Enviar</button>
+                  {response.formSave ? (
+                    'salvando'
+                  ) : (
+                    <button type="submit" disabled>
+                      Enviar
+                    </button>
+                  )}
                 </div>
               </form>
             </div>
@@ -143,7 +216,7 @@ export default function Page() {
 
       <footer>
         <span>
-          Create By <a href="#"> 2° Infor</a>
+          {data.datahome.footer_desc} <a href={data.datahome.footer_link}>{data.datahome.footer_name}</a>
         </span>
       </footer>
 
@@ -151,4 +224,10 @@ export default function Page() {
       <Script src="custom.js" strategy="afterInteractive" />
     </div>
   )
+}
+
+export async function getServerSideProps() {
+  const response = await fetch(`http://localhost:3000/`)
+  const data = await response.json()
+  return { props: { data } }
 }
